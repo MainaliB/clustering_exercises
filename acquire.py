@@ -39,6 +39,12 @@ join 	(SELECT p_17.parcelid, p_17.logerror, p_17.transactiondate
           GROUP BY parcelid )as sq1
 	ON (sq1.parcelid=p_17.parcelid and sq1.tdate = p_17.transactiondate )) as tmp1
 	on tmp1.parcelid = p17.parcelid
+left join propertylandusetype plt on plt.propertylandusetypeid = p17.propertylandusetypeid
+left join airconditioningtype ac on ac.airconditioningtypeid = p17.airconditioningtypeid
+left join architecturalstyletype ach on ach.architecturalstyletypeid = p17.architecturalstyletypeid 
+left join heatingorsystemtype ht on ht.heatingorsystemtypeid = p17.heatingorsystemtypeid
+left join storytype st on st.storytypeid = p17.storytypeid
+left join typeconstructiontype tcon on tcon.typeconstructiontypeid = p17.typeconstructiontypeid;
 '''
     zillow = pd.read_sql(query, get_connection('zillow'))
     
