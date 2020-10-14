@@ -39,6 +39,7 @@ join 	(SELECT p_17.parcelid, p_17.logerror, p_17.transactiondate
           GROUP BY parcelid )as sq1
 	ON (sq1.parcelid=p_17.parcelid and sq1.tdate = p_17.transactiondate )) as tmp1
 	on tmp1.parcelid = p17.parcelid
+left join buildingclasstype bct on bct.buildingclasstypeid = p17.buildingclasstypeid
 left join propertylandusetype plt on plt.propertylandusetypeid = p17.propertylandusetypeid
 left join airconditioningtype ac on ac.airconditioningtypeid = p17.airconditioningtypeid
 left join architecturalstyletype ach on ach.architecturalstyletypeid = p17.architecturalstyletypeid 
@@ -59,8 +60,8 @@ left join typeconstructiontype tcon on tcon.typeconstructiontypeid = p17.typecon
 # creating a cache so that we wont have to run the whole get data every time
 def get_zillow_data(cached = False):
     '''
-    This function reads in titanic data from Codeup database if cached == False 
-    or if cached == True reads in titanic df from a csv file, returns df
+    This function reads in zillow data from Codeup database if cached == False 
+    or if cached == True reads in zillow df from a csv file, returns df
     '''
     if cached or os.path.isfile('zillow.csv') == False:
         zillow = get_data()
@@ -69,7 +70,28 @@ def get_zillow_data(cached = False):
     return zillow
 
 
-# In[ ]:
+def mall_data():
+    query2 = '''select * 
+    from customers'''
+    mall = pd.read_sql(query2, get_connection('mall_customers'))
+    mall.to_csv('mall.csv')
+    return mall
+
+def get_mall_data(cached = False):
+    
+        
+    '''This function reads in mall data from Codeup database if cached == False 
+    or if cached == True reads in malldf from a csv file, returns df
+    '''
+    if cached or os.path.isfile('mall.csv') == False:
+        mall = mall_data()
+    else:
+        mall = pd.read_csv('mall.csv', index_col=0)
+    
+    return mall
+
+
+    
 
 
 
